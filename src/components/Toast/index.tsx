@@ -48,11 +48,13 @@ const toastStyle = css`
   align-items: center;
   justify-content: space-between;
   width: ${TOAST_SIZE.WIDTH}px;
-  height: ${TOAST_SIZE.HEIGHT}px;
-  padding: 0 30px;
+  min-height: ${TOAST_SIZE.HEIGHT}px;
+  height: fit-content;
+  padding: 15px 30px;
   background-color: white;
   border: 2px solid black;
   z-index: 999;
+  white-space: pre-line;
 
   @keyframes bounce {
     from,

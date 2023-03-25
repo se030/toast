@@ -3,7 +3,7 @@ import { CSSProperties } from '@emotion/serialize';
 import useToastContainer from './useToastContainer';
 import Toast, { TOAST_SIZE } from '@/components/Toast';
 
-interface ToastContainerProps {
+export interface ToastContainerProps {
   position?: PositionVariant;
 }
 
