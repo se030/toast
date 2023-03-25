@@ -14,8 +14,13 @@ const Toast = ({ id, message, delay }: Toast) => {
 
   return (
     <div css={toastStyle}>
-      <span>{message}</span>
-      <CloseButton onClose={onClose} />
+      <div css={toastContentStyle}>
+        <span>{message}</span>
+        <CloseButton onClose={onClose} />
+      </div>
+      <div css={progressBarStyle(delay)}>
+        <span></span>
+      </div>
     </div>
   );
 };
@@ -44,9 +49,9 @@ export const TOAST_SIZE = {
 };
 
 const toastStyle = css`
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: ${TOAST_SIZE.WIDTH}px;
   min-height: ${TOAST_SIZE.HEIGHT}px;
   height: fit-content;
@@ -62,20 +67,50 @@ const toastStyle = css`
     53%,
     80%,
     to {
-      transform: translate3d(0, 0, 0);
+      transform: translateY(0);
     }
     40%,
     43% {
-      transform: translate3d(0, -30px, 0);
+      transform: translateY(-30px);
     }
     70% {
-      transform: translate3d(0, -15px, 0);
+      transform: translateY(-15px);
     }
     90% {
-      transform: translate3d(0, -4px, 0);
+      transform: translateY(-4px);
     }
   }
   animation: bounce 1s ease;
+`;
+
+const toastContentStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const progressBarStyle = (delay: number | null) => css`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+
+  @keyframes progress {
+    0% {
+      width: 100%;
+    }
+    100% {
+      width: 0;
+    }
+  }
+  & > span {
+    display: block;
+    width: 0%;
+    height: 5px;
+    background: skyblue;
+    animation: ${delay === null ? 'none' : `progress ${delay}ms`};
+  }
 `;
 
 export default Toast;
