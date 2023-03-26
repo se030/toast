@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import useToastContainer from './useToastContainer';
-import Toast, { TOAST_SIZE } from '@/components/Toast';
+import Toast from '@/components/Toast';
+import { TOAST_SIZE } from '@/components/Toast/constant';
 
 export interface ToastContainerProps {
   position?: PositionVariant;

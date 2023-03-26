@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { eventEmitter } from '@/core/eventEmitter';
 
 const useToastContainer = () => {
   const [toastList, setToastList] = useState<Array<Toast>>([]);
 
   const id = useRef(0);
-  const createToast = ({ message, delay = 3000 }: ToastEventParams<'show'>) => {
-    setToastList((prev) => [...prev, { id: id.current, message, delay }]);
+  const createToast = ({ variant, message, delay }: ToastEventParams<'show'>) => {
     id.current += 1;
+    setToastList((prev) => [...prev, { id: id.current, variant, message, delay }]);
   };
 
   const removeToast = ({ id }: ToastEventParams<'close'>) => {

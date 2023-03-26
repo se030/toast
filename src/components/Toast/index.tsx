@@ -1,8 +1,9 @@
 import { css } from '@emotion/react';
 import { MouseEventHandler, useEffect } from 'react';
 import useToast from './useToast';
+import { TOAST_COLOR, TOAST_ICON, TOAST_SIZE } from './constant';
 
-const Toast = ({ id, message, delay }: Toast) => {
+const Toast = ({ id, variant = 'default', message, delay = 3000 }: Toast) => {
   const { onClose } = useToast(id);
 
   useEffect(() => {
@@ -15,10 +16,10 @@ const Toast = ({ id, message, delay }: Toast) => {
   return (
     <div css={toastStyle}>
       <div css={toastContentStyle}>
-        <span>{message}</span>
+        <span>{`${TOAST_ICON[variant]} ${message}`}</span>
         <CloseButton onClose={onClose} />
       </div>
-      <div css={progressBarStyle(delay)}>
+      <div css={progressBarStyle(variant, delay)}>
         <span></span>
       </div>
     </div>
@@ -43,11 +44,6 @@ const CloseButton = ({ onClose }: { onClose: MouseEventHandler }) => {
   );
 };
 
-export const TOAST_SIZE = {
-  WIDTH: 300,
-  HEIGHT: 80,
-};
-
 const toastStyle = css`
   position: relative;
   display: flex;
@@ -57,7 +53,7 @@ const toastStyle = css`
   height: fit-content;
   padding: 15px 30px;
   background-color: white;
-  border: 2px solid black;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
   z-index: 999;
   white-space: pre-line;
 
@@ -90,7 +86,7 @@ const toastContentStyle = css`
   width: 100%;
 `;
 
-const progressBarStyle = (delay: number | null) => css`
+const progressBarStyle = (variant: ToastVariant, delay: number | null) => css`
   position: absolute;
   left: 0;
   bottom: 0;
@@ -108,7 +104,7 @@ const progressBarStyle = (delay: number | null) => css`
     display: block;
     width: 0%;
     height: 5px;
-    background: skyblue;
+    background: ${TOAST_COLOR[variant]};
     animation: ${delay === null ? 'none' : `progress ${delay}ms`};
   }
 `;

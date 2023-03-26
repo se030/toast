@@ -1,8 +1,10 @@
 declare interface Toast {
   id: number;
+  variant?: ToastVariant;
   message: string;
-  delay: number | null;
+  delay?: number | null;
 }
+type ToastVariant = 'default' | 'success' | 'warning' | 'error';
 
 declare type ToastEvent = 'show' | 'close';
 declare type ToastEventParams<T extends ToastEvent> = T extends 'show'
