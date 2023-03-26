@@ -11,7 +11,10 @@ const useToastContainer = () => {
   };
 
   const removeToast = ({ id }: ToastEventParams<'close'>) => {
-    setToastList((prev) => prev.filter(({ id: toastId }) => toastId !== id));
+    setTimeout(
+      () => setToastList((prev) => prev.filter(({ id: toastId }) => toastId !== id)),
+      500
+    );
   };
 
   useEffect(() => {

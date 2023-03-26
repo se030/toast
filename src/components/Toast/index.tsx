@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useEffect, useRef } from 'react';
 import useToast from './useToast';
 import { TOAST_COLOR, TOAST_ICON, TOAST_SIZE } from './constant';
 import useTimer from './useTimer';
@@ -8,8 +8,21 @@ const Toast = ({ id, variant = 'default', message, delay = 3000 }: Toast) => {
   const { onClose } = useToast(id);
   const { onMouseEnter, onMouseLeave, progressBarRef } = useTimer(delay, onClose);
 
+  const toastRef = useRef<HTMLDivElement>(null);
+  const onFadeout = () => {
+    toastRef.current?.classList.add('fadeout');
+  };
+
+  useEffect(() => {
+    progressBarRef.current?.addEventListener('animationend', onFadeout);
+
+    return () => {
+      progressBarRef.current?.removeEventListener('animationend', onFadeout);
+    };
+  }, [progressBarRef]);
+
   return (
-    <div css={toastStyle} {...{ onMouseEnter, onMouseLeave }}>
+    <div ref={toastRef} css={toastStyle} {...{ onMouseEnter, onMouseLeave }}>
       <div css={toastContentStyle}>
         <p>{TOAST_ICON[variant]}</p>
         <p className='message'>{message}</p>
@@ -73,6 +86,18 @@ const toastStyle = css`
     }
   }
   animation: bounce 1s ease;
+
+  @keyframes fadeout {
+    from {
+      opacity: 100%;
+    }
+    to {
+      opacity: 0%;
+    }
+  }
+  &.fadeout {
+    animation: fadeout 0.5s ease;
+  }
 `;
 
 const toastContentStyle = css`
