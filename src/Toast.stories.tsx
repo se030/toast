@@ -15,36 +15,41 @@ export default {
 
 export const Example: ComponentStory<typeof ToastContainer> = () => {
   const [position, setPosition] = useState<PositionVariant>('top-right');
-  const delayInputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
-    const delayInputValue = delayInputRef.current?.value;
-    switch (delayInputValue) {
+    if (!formRef.current) return;
+
+    const formData = new FormData(formRef.current);
+    const variantInput = formData.get('variant');
+    const delayInput = formData.get('delay')!;
+
+    let message, delay;
+
+    switch (delayInput) {
       case undefined:
       case '':
-        showToastMessage('This toast lasts for 3s');
-        return;
+        message = 'This toast lasts for 3s';
+        break;
       case 'null':
-        showToastMessage('This toast does not close automatically', null);
-        return;
+        message = 'This toast does not close automatically';
+        delay = null;
+        break;
       default:
-        const delay = +delayInputValue;
-
-        if (isNaN(delay)) {
-          showToastMessage(
-            "This toast lasts for 3s\nDelay input should be number or 'null'"
-          );
-          return;
-        }
-        showToastMessage(`This toast lasts for ${delay}ms`, delay);
+        delay = +delayInput;
+        message = isNaN(delay)
+          ? "This toast lasts for 3s\nDelay input should be number or 'null'"
+          : `This toast lasts for ${delay}ms`;
     }
+
+    showToastMessage(message, delay, variantInput as ToastVariant);
   };
 
   return (
     <>
-      <form css={formStyle}>
+      <form ref={formRef} css={formStyle}>
         <fieldset css={fieldsetStyle}>
           <legend>Options</legend>
           <div>
@@ -63,8 +68,22 @@ export const Example: ComponentStory<typeof ToastContainer> = () => {
             ))}
           </div>
           <div>
+            <p>Variant</p>
+            {TOAST_VARIANTS.map((variant) => (
+              <p key={variant}>
+                <input
+                  type='radio'
+                  name='variant'
+                  value={variant}
+                  defaultChecked={variant === 'default'}
+                />
+                {variant}
+              </p>
+            ))}
+          </div>
+          <div>
             <p>Delay(ms)</p>
-            <input id='delay' name='delay' ref={delayInputRef} />
+            <input id='delay' name='delay' />
           </div>
         </fieldset>
         <button onClick={onClick}>Show Toast</button>
@@ -83,6 +102,8 @@ const TOAST_POSITIONS: PositionVariant[] = [
   'bottom-right',
 ];
 
+const TOAST_VARIANTS: ToastVariant[] = ['default', 'success', 'warning', 'error'];
+
 const flexColumn = css`
   display: flex;
   flex-direction: column;
@@ -91,7 +112,7 @@ const flexColumn = css`
 const formStyle = css`
   ${flexColumn}
   gap: 1rem;
-  width: 500px;
+  width: 700px;
 
   button {
     height: 48px;
