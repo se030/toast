@@ -25,6 +25,7 @@ export const Example: ComponentStory<typeof ToastContainer> = () => {
     const formData = new FormData(formRef.current);
     const variantInput = formData.get('variant');
     const delayInput = formData.get('delay')!;
+    const messageInput = formData.get('message') as string;
 
     let message, delay;
 
@@ -44,7 +45,11 @@ export const Example: ComponentStory<typeof ToastContainer> = () => {
           : `This toast lasts for ${delay}ms`;
     }
 
-    showToastMessage(message, delay, variantInput as ToastVariant);
+    showToastMessage(
+      messageInput.length ? messageInput : message,
+      delay,
+      variantInput as ToastVariant
+    );
   };
 
   return (
@@ -83,7 +88,9 @@ export const Example: ComponentStory<typeof ToastContainer> = () => {
           </div>
           <div>
             <p>Delay(ms)</p>
-            <input id='delay' name='delay' />
+            <input type='text' name='delay' />
+            <p>Message (Optional)</p>
+            <input type='text' name='message' />
           </div>
         </fieldset>
         <button onClick={onClick}>Show Toast</button>
@@ -125,7 +132,7 @@ const fieldsetStyle = css`
   padding: 32px;
   padding-top: 16px;
 
-  #delay {
+  input[type='text'] {
     width: 180px;
   }
 `;
