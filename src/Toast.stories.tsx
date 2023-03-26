@@ -3,6 +3,7 @@ import { MouseEventHandler, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import ToastContainer from './components/ToastContainer';
 import { showToastMessage } from './utils/showToastMessage';
+import { clearAllMessages } from './utils/clearAllMessages';
 
 export default {
   title: 'Toast',
@@ -94,6 +95,9 @@ export const Example: ComponentStory<typeof ToastContainer> = () => {
           </div>
         </fieldset>
         <button onClick={onClick}>Show Toast</button>
+        <button type='button' onClick={() => clearAllMessages()}>
+          Clear All
+        </button>
       </form>
       <ToastContainer position={position} />
     </>

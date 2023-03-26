@@ -15,10 +15,13 @@ const useToastContainer = () => {
   };
 
   useEffect(() => {
-    eventEmitter.on('show', createToast).on('close', removeToast);
+    eventEmitter
+      .on('show', createToast)
+      .on('close', removeToast)
+      .on('clearAll', () => setToastList([]));
 
     return () => {
-      eventEmitter.off('show').off('close');
+      eventEmitter.off('show').off('close').off('clearAll');
     };
   }, []);
 

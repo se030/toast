@@ -1,4 +1,4 @@
-declare interface Toast {
+interface Toast {
   id: number;
   variant?: ToastVariant;
   message: string;
@@ -6,10 +6,12 @@ declare interface Toast {
 }
 type ToastVariant = 'default' | 'success' | 'warning' | 'error';
 
-declare type ToastEvent = 'show' | 'close';
-declare type ToastEventParams<T extends ToastEvent> = T extends 'show'
-  ? Omit<Toast, 'id'>
-  : { id: number };
+type ToastEvent = 'show' | 'close' | 'clearAll';
+type ToastEventParams<T extends ToastEvent> = {
+  show: Omit<Toast, 'id'>;
+  close: { id: number };
+  clearAll: undefined;
+}[T];
 
 type PositionY = 'top' | 'bottom';
 type PositionX = 'left' | 'center' | 'right';
