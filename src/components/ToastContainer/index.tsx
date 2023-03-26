@@ -30,7 +30,7 @@ const getHorizontalPosition = (x: PositionX) => {
     case 'center':
       return `left: calc((100vw - ${TOAST_SIZE.WIDTH}px) / 2)`;
     default:
-      return `${x}: 0;`;
+      return `${x}: 16px;`;
   }
 };
 
@@ -40,11 +40,11 @@ const containerStyle = (
   length: number
 ) => css`
   position: fixed;
-  ${positionY}: 0;
+  ${positionY}: 16px;
   ${getHorizontalPosition(positionX)};
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
   width: ${TOAST_SIZE.WIDTH}px;
   height: ${TOAST_SIZE.HEIGHT * length}px;
 `;
