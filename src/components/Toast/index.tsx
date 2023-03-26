@@ -11,7 +11,8 @@ const Toast = ({ id, variant = 'default', message, delay = 3000 }: Toast) => {
   return (
     <div css={toastStyle} {...{ onMouseEnter, onMouseLeave }}>
       <div css={toastContentStyle}>
-        <span>{`${TOAST_ICON[variant]} ${message}`}</span>
+        <p>{TOAST_ICON[variant]}</p>
+        <p className='message'>{message}</p>
         <CloseButton onClose={onClose} />
       </div>
       <div css={progressBarStyle(variant, delay)}>
@@ -47,10 +48,10 @@ const toastStyle = css`
   min-height: ${TOAST_SIZE.HEIGHT}px;
   height: fit-content;
   padding: 15px 30px;
+  box-sizing: border-box;
   background-color: white;
   box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
   z-index: 999;
-  white-space: pre-line;
 
   @keyframes bounce {
     from,
@@ -76,9 +77,22 @@ const toastStyle = css`
 
 const toastContentStyle = css`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
   width: 100%;
+
+  & > .message {
+    width: 240px;
+    line-height: 1.5rem;
+    white-space: pre-line;
+  }
+
+  & > svg {
+    position: absolute;
+    top: 16px;
+    right: 12px;
+  }
 `;
 
 const progressBarStyle = (variant: ToastVariant, delay: number | null) => css`

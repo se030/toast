@@ -1,8 +1,8 @@
 import { CSSProperties } from 'react';
 
 export const TOAST_SIZE = {
-  WIDTH: 300,
-  HEIGHT: 80,
+  WIDTH: 360,
+  HEIGHT: 100,
 };
 
 export const TOAST_COLOR: Record<ToastVariant, CSSProperties['backgroundColor']> = {

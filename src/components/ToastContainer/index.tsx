@@ -28,7 +28,7 @@ const parsePosition = (position: PositionVariant) => {
 const getHorizontalPosition = (x: PositionX) => {
   switch (x) {
     case 'center':
-      return `left: calc((100vw - ${TOAST_SIZE.WIDTH}px) / 2)`;
+      return `left: calc((100vw - ${TOAST_SIZE.WIDTH}px) / 2);`;
     default:
       return `${x}: 16px;`;
   }
@@ -41,12 +41,13 @@ const containerStyle = (
 ) => css`
   position: fixed;
   ${positionY}: 16px;
-  ${getHorizontalPosition(positionX)};
+  ${getHorizontalPosition(positionX)}
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: ${TOAST_SIZE.WIDTH}px;
-  height: ${TOAST_SIZE.HEIGHT * length}px;
+  min-height: ${TOAST_SIZE.HEIGHT * length}px;
+  height: fit-content;
 `;
 
 export default ToastContainer;
