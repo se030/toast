@@ -1,26 +1,21 @@
 import { css } from '@emotion/react';
-import { MouseEventHandler, useEffect } from 'react';
+import { MouseEventHandler } from 'react';
 import useToast from './useToast';
 import { TOAST_COLOR, TOAST_ICON, TOAST_SIZE } from './constant';
+import useTimer from './useTimer';
 
 const Toast = ({ id, variant = 'default', message, delay = 3000 }: Toast) => {
   const { onClose } = useToast(id);
-
-  useEffect(() => {
-    if (delay === null) return;
-
-    const timer = setTimeout(onClose, delay);
-    return () => clearTimeout(timer);
-  }, []);
+  const { onMouseEnter, onMouseLeave, progressBarRef } = useTimer(delay, onClose);
 
   return (
-    <div css={toastStyle}>
+    <div css={toastStyle} {...{ onMouseEnter, onMouseLeave }}>
       <div css={toastContentStyle}>
         <span>{`${TOAST_ICON[variant]} ${message}`}</span>
         <CloseButton onClose={onClose} />
       </div>
       <div css={progressBarStyle(variant, delay)}>
-        <span></span>
+        <span ref={progressBarRef}></span>
       </div>
     </div>
   );
@@ -106,6 +101,9 @@ const progressBarStyle = (variant: ToastVariant, delay: number | null) => css`
     height: 5px;
     background: ${TOAST_COLOR[variant]};
     animation: ${delay === null ? 'none' : `progress ${delay}ms`};
+  }
+  & > span.paused {
+    animation-play-state: paused;
   }
 `;
 
