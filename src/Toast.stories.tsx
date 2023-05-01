@@ -2,8 +2,8 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MouseEventHandler, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import ToastContainer from './components/ToastContainer';
-import { showToastMessage } from './utils/showToastMessage';
-import { clearAllMessages } from './utils/clearAllMessages';
+import { toast } from './utils/toast';
+import { clearToast } from './utils/clearToast';
 
 export default {
   title: 'Toast',
@@ -46,7 +46,7 @@ export const Example: ComponentStory<typeof ToastContainer> = () => {
           : `This toast lasts for ${delay}ms`;
     }
 
-    showToastMessage(
+    toast(
       messageInput.length ? messageInput : message,
       delay,
       variantInput as ToastVariant
@@ -95,7 +95,7 @@ export const Example: ComponentStory<typeof ToastContainer> = () => {
           </div>
         </fieldset>
         <button onClick={onClick}>Show Toast</button>
-        <button type='button' onClick={() => clearAllMessages()}>
+        <button type='button' onClick={() => clearToast()}>
           Clear All
         </button>
       </form>
