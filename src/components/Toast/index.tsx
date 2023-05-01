@@ -139,7 +139,7 @@ const progressBarStyle = (variant: ToastVariant, delay: number | null) => css`
     width: 0%;
     height: 5px;
     background: ${TOAST_COLOR[variant]};
-    animation: ${delay === null ? 'none' : `progress ${delay}ms`};
+    animation: ${delay === null ? 'none' : `progress ${delay}ms linear`};
   }
   & > span.paused {
     animation-play-state: paused;
