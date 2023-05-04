@@ -1,16 +1,30 @@
 {
-  "name": "toast",
+  "name": "@se030/toast",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.umd.cjs",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    }
+  },
   "scripts": {
     "dev": "yarn storybook",
+    "build": "tsc -p tsconfig.publish.json && vite build --config vite.publish.config.ts",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "vite-plugin-dts": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
@@ -25,9 +39,9 @@
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
     "babel-loader": "^8.3.0",
+    "react-dom": "^18.2.0",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
-    "vite-tsconfig-paths": "^4.0.7",
-    "react-dom": "^18.2.0"
+    "vite-tsconfig-paths": "^4.0.7"
   }
 }
