@@ -1,19 +1,19 @@
-const viteTsconfig = require('vite-tsconfig-paths');
-const tsconfigPaths = viteTsconfig.default;
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 const { mergeConfig } = require('vite');
 
-module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+const config = {
+  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
   ],
-  framework: '@storybook/react',
-  core: {
-    builder: '@storybook/builder-vite',
+  framework: {
+    name: '@storybook/react-vite',
+    options: {},
   },
+  core: {},
   features: {
     storyStoreV7: true,
     interactionsDebugger: true,
@@ -23,4 +23,9 @@ module.exports = {
       plugins: [tsconfigPaths()],
     });
   },
+  docs: {
+    autodocs: true,
+  },
 };
+
+export default config;

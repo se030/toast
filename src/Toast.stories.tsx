@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 import {
   Dispatch,
   MouseEventHandler,
@@ -19,9 +19,9 @@ export default {
     componentSubtitle:
       'Toast message example with <ToastContainer /> and showToastMessage()',
   },
-} as ComponentMeta<typeof ToastContainer>;
+} as Meta<typeof ToastContainer>;
 
-export const Example: ComponentStory<typeof ToastContainer> = () => {
+export const Example: StoryFn<typeof ToastContainer> = () => {
   const [position, setPosition] = useState<PositionVariant>('top-right');
   const formRef = useRef<HTMLFormElement>(null);
 
