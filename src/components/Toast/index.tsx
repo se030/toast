@@ -23,7 +23,7 @@ const Toast = ({ id, variant = 'default', message, delay = 3000 }: Toast) => {
 
   return (
     <div
-      role='widget'
+      role='status'
       ref={toastRef}
       css={toastStyle}
       {...{ onMouseEnter, onMouseLeave }}
