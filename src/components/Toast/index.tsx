@@ -22,7 +22,12 @@ const Toast = ({ id, variant = 'default', message, delay = 3000 }: Toast) => {
   }, [progressBarRef]);
 
   return (
-    <div ref={toastRef} css={toastStyle} {...{ onMouseEnter, onMouseLeave }}>
+    <div
+      role='widget'
+      ref={toastRef}
+      css={toastStyle}
+      {...{ onMouseEnter, onMouseLeave }}
+    >
       <div css={toastContentStyle}>
         <p>{TOAST_ICON[variant]}</p>
         <p className='message'>{message}</p>

@@ -12,6 +12,9 @@ import ToastContainer from './components/ToastContainer';
 import { toast } from './utils/toast';
 import { clearToast } from './utils/clearToast';
 
+import { within, userEvent } from '@storybook/testing-library';
+import { expect } from '@storybook/jest';
+
 export default {
   title: 'Toast',
   component: ToastContainer,
@@ -66,6 +69,17 @@ export const Example: StoryFn<typeof ToastContainer> = () => {
       <ToastContainer position={position} />
     </>
   );
+};
+
+Example.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  const showToastButton = await canvas.findByText('Show Toast');
+
+  await userEvent.click(showToastButton);
+
+  const toastComponent = canvas.getByRole('widget');
+  await expect(toastComponent).toBeInTheDocument();
 };
 
 /**
