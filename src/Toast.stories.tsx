@@ -1,5 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MouseEventHandler, useRef, useState } from 'react';
+import {
+  Dispatch,
+  MouseEventHandler,
+  RefObject,
+  SetStateAction,
+  useRef,
+  useState,
+} from 'react';
 import { css } from '@emotion/react';
 import ToastContainer from './components/ToastContainer';
 import { toast } from './utils/toast';
@@ -18,7 +25,7 @@ export const Example: ComponentStory<typeof ToastContainer> = () => {
   const [position, setPosition] = useState<PositionVariant>('top-right');
   const formRef = useRef<HTMLFormElement>(null);
 
-  const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const onToast: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
     if (!formRef.current) return;
@@ -55,88 +62,103 @@ export const Example: ComponentStory<typeof ToastContainer> = () => {
 
   return (
     <>
-      <form ref={formRef} css={formStyle}>
-        <fieldset css={fieldsetStyle}>
-          <legend>Options</legend>
-          <div>
-            <p>Position</p>
-            {TOAST_POSITIONS.map((pos) => (
-              <p key={pos}>
-                <input
-                  type='radio'
-                  name='position'
-                  value={pos}
-                  defaultChecked={pos === 'top-right'}
-                  onChange={() => setPosition(pos)}
-                />
-                {pos}
-              </p>
-            ))}
-          </div>
-          <div>
-            <p>Variant</p>
-            {TOAST_VARIANTS.map((variant) => (
-              <p key={variant}>
-                <input
-                  type='radio'
-                  name='variant'
-                  value={variant}
-                  defaultChecked={variant === 'default'}
-                />
-                {variant}
-              </p>
-            ))}
-          </div>
-          <div>
-            <p>Delay(ms)</p>
-            <input type='text' name='delay' />
-            <p>Message (Optional)</p>
-            <input type='text' name='message' />
-          </div>
-        </fieldset>
-        <button onClick={onClick}>Show Toast</button>
-        <button type='button' onClick={() => clearToast()}>
-          Clear All
-        </button>
-      </form>
+      <ToastForm {...{ formRef, setPosition, onToast }} />
       <ToastContainer position={position} />
     </>
   );
 };
 
-const TOAST_POSITIONS: PositionVariant[] = [
-  'top-left',
-  'top-center',
-  'top-right',
-  'bottom-left',
-  'bottom-center',
-  'bottom-right',
-];
+/**
+ * Component for Story
+ */
+interface ToastFormProps {
+  formRef: RefObject<HTMLFormElement>;
+  setPosition: Dispatch<SetStateAction<PositionVariant>>;
+  onToast: MouseEventHandler<HTMLButtonElement>;
+}
 
-const TOAST_VARIANTS: ToastVariant[] = ['default', 'success', 'warning', 'error'];
+const ToastForm = ({ formRef, setPosition, onToast }: ToastFormProps) => {
+  const TOAST_POSITIONS: PositionVariant[] = [
+    'top-left',
+    'top-center',
+    'top-right',
+    'bottom-left',
+    'bottom-center',
+    'bottom-right',
+  ];
 
-const flexColumn = css`
-  display: flex;
-  flex-direction: column;
-`;
+  const TOAST_VARIANTS: ToastVariant[] = ['default', 'success', 'warning', 'error'];
 
-const formStyle = css`
-  ${flexColumn}
-  gap: 1rem;
-  width: 700px;
+  const flexColumn = css`
+    display: flex;
+    flex-direction: column;
+  `;
 
-  button {
-    height: 48px;
-  }
-`;
+  const formStyle = css`
+    ${flexColumn}
+    gap: 1rem;
+    width: 700px;
 
-const fieldsetStyle = css`
-  display: flex;
-  justify-content: space-between;
-  padding: 32px;
-  padding-top: 16px;
+    button {
+      height: 48px;
+    }
+  `;
 
-  input[type='text'] {
-    width: 180px;
-  }
-`;
+  const fieldsetStyle = css`
+    display: flex;
+    justify-content: space-between;
+    padding: 32px;
+    padding-top: 16px;
+
+    input[type='text'] {
+      width: 180px;
+    }
+  `;
+
+  return (
+    <form ref={formRef} css={formStyle}>
+      <fieldset css={fieldsetStyle}>
+        <legend>Options</legend>
+        <div>
+          <p>Position</p>
+          {TOAST_POSITIONS.map((pos) => (
+            <p key={pos}>
+              <input
+                type='radio'
+                name='position'
+                value={pos}
+                defaultChecked={pos === 'top-right'}
+                onChange={() => setPosition(pos)}
+              />
+              {pos}
+            </p>
+          ))}
+        </div>
+        <div>
+          <p>Variant</p>
+          {TOAST_VARIANTS.map((variant) => (
+            <p key={variant}>
+              <input
+                type='radio'
+                name='variant'
+                value={variant}
+                defaultChecked={variant === 'default'}
+              />
+              {variant}
+            </p>
+          ))}
+        </div>
+        <div>
+          <p>Delay(ms)</p>
+          <input type='text' name='delay' />
+          <p>Message (Optional)</p>
+          <input type='text' name='message' />
+        </div>
+      </fieldset>
+      <button onClick={onToast}>Show Toast</button>
+      <button type='button' onClick={() => clearToast()}>
+        Clear All
+      </button>
+    </form>
+  );
+};
